@@ -3,50 +3,66 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GunController : MonoBehaviour {
-
-public float fireRate = 10f;
 public int maxAmmo = 30;
 public int startingAmmo = 10;
 public float bulletSpeed = 100f;
 public Transform firePoint;
 private int currentAmmo;
+[SerializeField] int damage;
+[SerializeField] float range=20f;
 [SerializeField] GameObject muzzle;
-[SerializeField] AudioSource gunSound;
-private bool isAuto = false;
+[SerializeField] AudioClip shootingSound,reloadSound;
+[SerializeField] GameObject impactPrefab;
+[SerializeField] LayerMask vitalsLayer;
+AudioSource gunSound;
+private Animator an;
+private bool isReloading = false;
+public float reloadTime = 1.5f;
+
 private void Start() {
     currentAmmo = startingAmmo;
+    an = GetComponent<Animator>();
+    gunSound = GetComponent<AudioSource>();
 }
 
 void Update() {
-    if (Input.GetButtonDown("Fire1") && currentAmmo > 0) {
-        Fire();
-    }
-
-    if (isAuto && Input.GetButton("Fire1") && currentAmmo > 0) {
+    if (Input.GetButtonDown("Fire1") && currentAmmo > 0 && !isReloading) {
         Fire();
     }
 }
 
 void Fire() {
-    currentAmmo--; // Decrement the current ammo count
+    currentAmmo--;
     GameObject muzzleOb = Instantiate(muzzle,firePoint.position,Quaternion.identity);
     Destroy(muzzleOb,1f);
-    gunSound.Play();
+    an.SetTrigger("shoot");
+    PlaySound(shootingSound);
     Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
     RaycastHit hit;
-    if (Physics.Raycast(ray, out hit)) {
-        Debug.DrawLine(firePoint.position, hit.point, Color.red, 1f);
-        // Add code here to apply damage to the hit object or perform other actions
-    } else {
-        Debug.DrawLine(firePoint.position, ray.origin + (ray.direction * 100f), Color.red, 1f);
+    if (Physics.Raycast(ray,out hit,range,vitalsLayer)){
+        hit.transform.GetComponentInChildren<VitalsAnimator>().Damage(damage);
+    }
+    else if(Physics.Raycast(ray,out hit,range)) {
+        GameObject impact = Instantiate(impactPrefab,hit.point,Quaternion.LookRotation(hit.normal));
+        impact.transform.position += impact.transform.forward/1000;
+        Destroy(impact,5f);
     }
     StartCoroutine(Reload());
 }
 
 IEnumerator Reload() {
-    if (currentAmmo == 0) {
-        yield return new WaitForSeconds(1.5f);
+    if(currentAmmo==0){
+        isReloading = true;
+        an.SetTrigger("reload");
+        PlaySound(reloadSound);
+        yield return new WaitForSeconds(reloadTime);
         currentAmmo = maxAmmo;
+        isReloading = false;
     }
+}
+void PlaySound(AudioClip clip){
+    gunSound.clip = clip;
+    gunSound.Play();
 }
 }

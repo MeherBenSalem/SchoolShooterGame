@@ -6,6 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Import/EvolveGames/RealisticFPSController/Scenes/DemoScene.unity
-    guid: ab0b46e2e44b5d14f99aff193b77d1c2
+    path: Assets/Scenes/Esprit_Bloc_IJK.unity
+    guid: 8ec96e2e4170d024ab7d3b370fdf031d
   m_configObjects: {}

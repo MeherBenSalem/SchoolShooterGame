@@ -175,6 +175,8 @@ public class CitizenBehaviour : MonoBehaviour
     }
 
     void ResetAnimations(){
+        if(agent==null)
+        return;
         lookTarget=null;
         agent.enabled=true;
         An.SetInteger("State",0);
