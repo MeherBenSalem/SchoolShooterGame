@@ -14,6 +14,7 @@ private int currentAmmo;
 [SerializeField] AudioClip shootingSound,reloadSound;
 [SerializeField] GameObject impactPrefab;
 [SerializeField] LayerMask vitalsLayer;
+[SerializeField] LayerMask deadBodyLayer;
 AudioSource gunSound;
 private Animator an;
 private bool isReloading = false;
@@ -41,7 +42,10 @@ void Fire() {
 
     RaycastHit hit;
     if (Physics.Raycast(ray,out hit,range,vitalsLayer)){
+        if(hit.transform.GetComponentInChildren<VitalsAnimator>())
         hit.transform.GetComponentInChildren<VitalsAnimator>().Damage(damage);
+        if(hit.transform.GetComponentInChildren<BloodControl>())
+        hit.transform.GetComponentInChildren<BloodControl>().Bleed(hit);
     }
     else if(Physics.Raycast(ray,out hit,range)) {
         GameObject impact = Instantiate(impactPrefab,hit.point,Quaternion.LookRotation(hit.normal));

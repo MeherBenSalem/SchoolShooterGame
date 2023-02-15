@@ -41,31 +41,6 @@ public class BFX_DemoTest : MonoBehaviour
     int effectIdx;
     void Update()
     {
-        //if (isVR)
-        //{
-
-        //    if (OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger) || OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger))
-        //    {
-        //        RaycastHit hit;
-        //        if (Physics.Raycast(Dir.position, Dir.forward, out hit))
-        //        {
-        //            // var randRotation = new Vector3(0, Random.value * 360f, 0);
-        //            // var dir = CalculateAngle(Vector3.forward, hit.normal);
-        //            float angle = Mathf.Atan2(hit.normal.x, hit.normal.z) * Mathf.Rad2Deg + 180;
-
-        //            var effectIdx = Random.Range(0, BloodFX.Length);
-        //            var instance = Instantiate(BloodFX[effectIdx], hit.point, Quaternion.Euler(0, angle + 90, 0));
-        //            var settings = instance.GetComponent<BFX_BloodSettings>();
-        //            settings.DecalLiveTimeInfinite = InfiniteDecal;
-        //            settings.LightIntencityMultiplier = DirLight.intensity;
-
-        //            if (!InfiniteDecal) Destroy(instance, 20);
-
-        //        }
-
-        //    }
-        //}
-      //  else
         {
             if (Input.GetMouseButtonDown(0))
             {

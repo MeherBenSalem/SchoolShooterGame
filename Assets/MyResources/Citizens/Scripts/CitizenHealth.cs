@@ -19,15 +19,16 @@ public class CitizenHealth : MonoBehaviour
     }
 
     public void takeDamage(float amount){
+        if(healthPoints>=0){
         CB.FearStateApply();
         healthPoints-=amount;
-        if(healthPoints<=25){
+        if(healthPoints<=25&&healthPoints>0){
            an.SetTrigger("Pray");
            CB.ActivetDesAgent();
-        }
-        if(healthPoints<=0){
+        }else if(healthPoints<=0){
            ragdollActivator.RagdollModeOn();
            CB.changeState(4);
+        }
         }
     }
 }

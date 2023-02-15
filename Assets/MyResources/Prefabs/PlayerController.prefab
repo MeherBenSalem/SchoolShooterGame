@@ -3676,11 +3676,16 @@ MonoBehaviour:
   startingAmmo: 10
   bulletSpeed: 100
   firePoint: {fileID: 2087788362160894080}
+  damage: 10
+  range: 20
   muzzle: {fileID: 663317427444285406, guid: 5363109e6d0d10244bc22da947d05c6c, type: 3}
   shootingSound: {fileID: 8300000, guid: 550f3c3ad5f0ffa4fbbc07f3010707c7, type: 3}
   reloadSound: {fileID: 8300000, guid: e6733f04018aeed438dbca2a5abf40d2, type: 3}
   impactPrefab: {fileID: 8929396241754568276, guid: 2764524a5ceabbf44b16561a5e331e65,
     type: 3}
+  vitalsLayer:
+    serializedVersion: 2
+    m_Bits: 64
   reloadTime: 1.5
 --- !u!82 &2087788362520077028
 AudioSource:

@@ -9,17 +9,20 @@ public class RagdollActivator : MonoBehaviour
     [SerializeField] private GameObject thisGuysRig;
     [SerializeField] private Animator An;
     [SerializeField] private NavMeshAgent agent;
+    [SerializeField] private int deadBodyLayer;
  
     void Start(){
         agent = GetComponent<NavMeshAgent>();
         getRagdollBits();
         RagdollModeOff();
+        deadBodyLayer = LayerMask.NameToLayer("Vitals");
     }
     public void RagdollModeOn(){
         An.enabled = false;
         agent.enabled = false;
         foreach(Collider col in ragdollColliders){
            col.enabled = true;
+           col.gameObject.layer = deadBodyLayer;
         }
         foreach(Rigidbody col in ragdollRigisbodys){
            col.isKinematic = false;
