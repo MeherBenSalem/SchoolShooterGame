@@ -3,22 +3,29 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class GunController : MonoBehaviour {
-public int maxAmmo = 30;
-public int startingAmmo = 10;
-public float bulletSpeed = 100f;
-public Transform firePoint;
-private int currentAmmo;
+
+[Header("Ammo Settings")]
+[SerializeField] int maxMagazine = 30;
+[SerializeField] int startingAmmo = 30;
+
+[Header("Bullet Settings")]
 [SerializeField] int damage;
 [SerializeField] float range=20f;
+
+[Header("Weapon Settings")]
+[SerializeField] Transform firePoint;
+[SerializeField] float reloadTime = 1.5f;
+[SerializeField] LayerMask vitalsLayer;
+[SerializeField] LayerMask deadBodyLayer;
+
+[Header("Cosmetics Settings")]
 [SerializeField] GameObject muzzle;
 [SerializeField] AudioClip shootingSound,reloadSound;
 [SerializeField] GameObject impactPrefab;
-[SerializeField] LayerMask vitalsLayer;
-[SerializeField] LayerMask deadBodyLayer;
 AudioSource gunSound;
 private Animator an;
 private bool isReloading = false;
-public float reloadTime = 1.5f;
+private int currentAmmo;
 
 private void Start() {
     currentAmmo = startingAmmo;
@@ -63,7 +70,7 @@ IEnumerator Reload() {
         an.SetTrigger("reload");
         PlaySound(reloadSound);
         yield return new WaitForSeconds(reloadTime);
-        currentAmmo = maxAmmo;
+        currentAmmo = maxMagazine;
         ItemChange.instance.updateBulletCount(currentAmmo);
         isReloading = false;
     }
