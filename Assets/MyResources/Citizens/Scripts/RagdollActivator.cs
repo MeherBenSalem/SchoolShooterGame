@@ -19,6 +19,7 @@ public class RagdollActivator : MonoBehaviour
     }
     public void RagdollModeOn(){
         An.enabled = false;
+        if(agent!=null)
         agent.enabled = false;
         foreach(Collider col in ragdollColliders){
            col.enabled = true;

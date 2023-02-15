@@ -23,6 +23,7 @@ public float reloadTime = 1.5f;
 private void Start() {
     currentAmmo = startingAmmo;
     an = GetComponent<Animator>();
+    ItemChange.instance.updateBulletCount(currentAmmo);
     gunSound = GetComponent<AudioSource>();
 }
 
@@ -34,6 +35,7 @@ void Update() {
 
 void Fire() {
     currentAmmo--;
+    ItemChange.instance.updateBulletCount(currentAmmo);
     GameObject muzzleOb = Instantiate(muzzle,firePoint.position,Quaternion.identity);
     Destroy(muzzleOb,1f);
     an.SetTrigger("shoot");
@@ -62,6 +64,7 @@ IEnumerator Reload() {
         PlaySound(reloadSound);
         yield return new WaitForSeconds(reloadTime);
         currentAmmo = maxAmmo;
+        ItemChange.instance.updateBulletCount(currentAmmo);
         isReloading = false;
     }
 }

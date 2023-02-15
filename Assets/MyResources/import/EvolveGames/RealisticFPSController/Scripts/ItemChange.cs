@@ -3,21 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace EvolveGames
-{
     public class ItemChange : MonoBehaviour
     {
         [Header("Item Change")]
         [SerializeField] public Animator ani;
         [SerializeField] Image ItemCanvasLogo;
         [SerializeField] bool LoopItems = true;
-        [SerializeField, Tooltip("You can add your new item here.")] GameObject[] Items;
-        [SerializeField, Tooltip("These logos must have the same order as the items.")] Sprite[] ItemLogos;
+        [SerializeField] GameObject[] Items;
+        [SerializeField] Text bulletCount;
         [SerializeField] int ItemIdInt;
         int MaxItems;
         int ChangeItemInt;
         [HideInInspector] public bool DefiniteHide;
         bool ItemChangeLogo;
+        public static ItemChange instance;
+
+        void Awake(){
+            if(instance != null){
+             Destroy(instance);
+            }
+            instance = this;
+        }
 
         private void Start()
         {
@@ -28,7 +34,7 @@ namespace EvolveGames
             ItemChangeLogo = false;
             DefiniteHide = false;
             ChangeItemInt = ItemIdInt;
-            ItemCanvasLogo.sprite = ItemLogos[ItemIdInt];
+            ItemCanvasLogo.sprite = Items[ItemIdInt].GetComponent<Item>().itemIcon;
             MaxItems = Items.Length - 1;
             StartCoroutine(ItemChangeObject());
         }
@@ -85,14 +91,17 @@ namespace EvolveGames
         {
             ItemChangeLogo = true;
             yield return new WaitForSeconds(0.5f);
-            ItemCanvasLogo.sprite = ItemLogos[ItemIdInt];
+            ItemCanvasLogo.sprite = Items[ItemIdInt].GetComponent<Item>().itemIcon;
+            if(Items[ItemIdInt].GetComponent<GunController>())
+                bulletCount.enabled = true;
+            else
+                bulletCount.enabled = false;
             yield return new WaitForSeconds(0.1f);
             ItemChangeLogo = false;
         }
 
         private void FixedUpdate()
         {
-            
             if (ItemChangeLogo)
             {
                 Color OpacityColor = ItemCanvasLogo.color;
@@ -106,6 +115,7 @@ namespace EvolveGames
                 ItemCanvasLogo.color = OpacityColor;
             }
         }
+        public void updateBulletCount(int amount){
+            bulletCount.text = amount.ToString();
+        }
     }
-
-}
